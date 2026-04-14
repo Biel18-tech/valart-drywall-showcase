@@ -5,6 +5,7 @@ import CategoryGrid from "@/components/CategoryGrid";
 import BestSellers from "@/components/BestSellers";
 import BrandPartners from "@/components/BrandPartners";
 import Footer from "@/components/Footer";
+import CartDrawer from "@/components/CartDrawer";
 
 const Index = () => (
   <div className="min-h-screen flex flex-col">
@@ -17,6 +18,7 @@ const Index = () => (
       <BrandPartners />
     </main>
     <Footer />
+    <CartDrawer />
   </div>
 );
 
