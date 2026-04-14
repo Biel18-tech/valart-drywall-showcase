@@ -1,10 +1,13 @@
-import { Search, ShoppingCart, Menu, ChevronDown, Home } from "lucide-react";
-import { useState } from "react";
+import { Search, ShoppingCart, Menu, ChevronDown, Home, X } from "lucide-react";
+import { useState, useRef } from "react";
+import { useCart } from "@/stores/useCart";
+import { toast } from "sonner";
 
 const navItems = [
   {
     label: "PRODUTOS",
     hasMega: true,
+    href: "#categorias",
     megaItems: [
       "Drywall & Estruturas",
       "Forros & Divisórias",
@@ -14,20 +17,45 @@ const navItems = [
       "Ferragens & Fixação",
     ],
   },
-  { label: "MARCAS", hasMega: false },
-  { label: "ORÇAMENTO", hasMega: false },
-  { label: "BLOG", hasMega: false },
-  { label: "CONTATO", hasMega: false },
+  { label: "MARCAS", hasMega: false, href: "#marcas" },
+  { label: "ORÇAMENTO", hasMega: false, href: "#orcamento" },
+  { label: "BLOG", hasMega: false, href: "#blog" },
+  { label: "CONTATO", hasMega: false, href: "#contato" },
 ];
 
 const Header = () => {
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchRef = useRef<HTMLInputElement>(null);
+  const totalItems = useCart((s) => s.totalItems());
+  const toggleCart = useCart((s) => s.toggleCart);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      toast.info(`Buscando por "${searchQuery}"...`, {
+        description: "Funcionalidade de busca em desenvolvimento",
+      });
+    } else {
+      searchRef.current?.focus();
+    }
+  };
+
+  const scrollTo = (href: string) => {
+    setMobileOpen(false);
+    const id = href.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      toast.info("Página em construção", { description: "Em breve essa seção estará disponível!" });
+    }
+  };
 
   return (
-    <header className="bg-surface-elevated shadow-md sticky top-0 z-50">
+    <header className="bg-surface-elevated shadow-md sticky top-0 z-40">
       <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-4">
-        {/* Logo */}
         <a href="/" className="flex items-center gap-2 shrink-0">
           <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
             <Home className="text-primary-foreground" size={22} />
@@ -38,38 +66,44 @@ const Header = () => {
           </div>
         </a>
 
-        {/* Search */}
-        <div className="hidden md:flex flex-1 max-w-xl mx-4">
+        <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl mx-4">
           <div className="relative w-full">
             <input
+              ref={searchRef}
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar produtos..."
               className="w-full rounded-lg border border-border bg-secondary px-4 py-2.5 pr-12 text-sm font-body focus:outline-none focus:ring-2 focus:ring-primary"
             />
-            <button className="absolute right-0 top-0 h-full px-4 bg-red-brand rounded-r-lg text-accent-foreground hover:bg-red-brand-hover transition-colors">
+            <button
+              type="submit"
+              className="absolute right-0 top-0 h-full px-4 bg-red-brand rounded-r-lg text-accent-foreground hover:bg-red-brand-hover transition-colors"
+            >
               <Search size={18} />
             </button>
           </div>
-        </div>
+        </form>
 
-        {/* Cart + Mobile Toggle */}
         <div className="flex items-center gap-3">
-          <button className="relative p-2 rounded-lg hover:bg-secondary transition-colors">
+          <button
+            onClick={toggleCart}
+            className="relative p-2 rounded-lg hover:bg-secondary transition-colors"
+          >
             <ShoppingCart size={24} className="text-primary" />
             <span className="absolute -top-1 -right-1 bg-red-brand text-accent-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
-              0
+              {totalItems}
             </span>
           </button>
           <button
             className="md:hidden p-2"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
-            <Menu size={24} className="text-primary" />
+            {mobileOpen ? <X size={24} className="text-primary" /> : <Menu size={24} className="text-primary" />}
           </button>
         </div>
       </div>
 
-      {/* Navigation */}
       <nav className="bg-primary hidden md:block">
         <div className="container mx-auto px-4">
           <ul className="flex items-center gap-1">
@@ -80,23 +114,26 @@ const Header = () => {
                 onMouseEnter={() => item.hasMega && setMegaOpen(true)}
                 onMouseLeave={() => item.hasMega && setMegaOpen(false)}
               >
-                <a
-                  href="#"
+                <button
+                  onClick={() => scrollTo(item.href)}
                   className="flex items-center gap-1 px-5 py-3.5 text-sm font-heading font-semibold text-primary-foreground hover:bg-navy-light transition-colors"
                 >
                   {item.label}
                   {item.hasMega && <ChevronDown size={14} />}
-                </a>
+                </button>
                 {item.hasMega && megaOpen && (
                   <div className="absolute left-0 top-full bg-surface-elevated shadow-xl rounded-b-lg border border-border min-w-[260px] z-50">
                     {item.megaItems!.map((sub) => (
-                      <a
+                      <button
                         key={sub}
-                        href="#"
-                        className="block px-5 py-3 text-sm font-body text-foreground hover:bg-secondary hover:text-red-brand transition-colors"
+                        onClick={() => {
+                          setMegaOpen(false);
+                          toast.info(sub, { description: "Navegação de categoria em breve!" });
+                        }}
+                        className="block w-full text-left px-5 py-3 text-sm font-body text-foreground hover:bg-secondary hover:text-red-brand transition-colors"
                       >
                         {sub}
-                      </a>
+                      </button>
                     ))}
                   </div>
                 )}
@@ -106,17 +143,30 @@ const Header = () => {
         </div>
       </nav>
 
-      {/* Mobile Nav */}
       {mobileOpen && (
         <nav className="md:hidden bg-primary border-t border-navy-light">
+          <form onSubmit={handleSearch} className="px-4 py-3">
+            <div className="relative w-full">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Buscar produtos..."
+                className="w-full rounded-lg bg-navy-light px-4 py-2.5 pr-12 text-sm font-body text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-red-brand"
+              />
+              <button type="submit" className="absolute right-0 top-0 h-full px-4 text-primary-foreground">
+                <Search size={18} />
+              </button>
+            </div>
+          </form>
           {navItems.map((item) => (
-            <a
+            <button
               key={item.label}
-              href="#"
-              className="block px-6 py-3 text-sm font-heading font-semibold text-primary-foreground hover:bg-navy-light"
+              onClick={() => scrollTo(item.href)}
+              className="block w-full text-left px-6 py-3 text-sm font-heading font-semibold text-primary-foreground hover:bg-navy-light"
             >
               {item.label}
-            </a>
+            </button>
           ))}
         </nav>
       )}

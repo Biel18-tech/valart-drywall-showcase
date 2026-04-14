@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import catDrywall from "@/assets/cat-drywall.jpg";
 import catForros from "@/assets/cat-forros.jpg";
 import catGesso from "@/assets/cat-gesso.jpg";
@@ -16,7 +17,7 @@ const categories = [
 ];
 
 const CategoryGrid = () => (
-  <section className="py-16 bg-background">
+  <section id="categorias" className="py-16 bg-background">
     <div className="container mx-auto px-4">
       <h2 className="text-3xl md:text-4xl font-heading font-black text-primary text-center mb-3">
         Categorias em Destaque
@@ -26,14 +27,14 @@ const CategoryGrid = () => (
       </p>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
         {categories.map((cat, i) => (
-          <motion.a
+          <motion.button
             key={cat.name}
-            href="#"
+            onClick={() => toast.info(cat.name, { description: "Página da categoria em breve!" })}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="group relative rounded-xl overflow-hidden aspect-[4/3] shadow-md"
+            className="group relative rounded-xl overflow-hidden aspect-[4/3] shadow-md text-left"
           >
             <img
               src={cat.image}
@@ -49,7 +50,7 @@ const CategoryGrid = () => (
                 {cat.name}
               </h3>
             </div>
-          </motion.a>
+          </motion.button>
         ))}
       </div>
     </div>
