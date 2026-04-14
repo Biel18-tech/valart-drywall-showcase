@@ -1,7 +1,7 @@
 const brands = ["Ancora", "Gypsum", "Placo", "Multiperfil", "Knauf", "Eternit"];
 
 const BrandPartners = () => (
-  <section className="py-14 bg-background">
+  <section id="marcas" className="py-14 bg-background">
     <div className="container mx-auto px-4 text-center">
       <h2 className="text-2xl md:text-3xl font-heading font-black text-primary mb-10">
         Trabalhamos com as Melhores Marcas
