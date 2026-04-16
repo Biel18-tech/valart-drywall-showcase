@@ -37,7 +37,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <TopBar onLoginClick={() => setAuthOpen(true)} onOrdersClick={() => setOrdersOpen(true)} />
-      <Header onSearchOpen={handleSearchOpen} />
+      <Header onSearchOpen={handleSearchOpen} onCategoryClick={handleCategoryClick} />
       <main className="flex-1">
         <HeroBanner />
         <CategoryGrid onCategoryClick={handleCategoryClick} />
