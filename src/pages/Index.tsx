@@ -20,12 +20,14 @@ const Index = () => {
   const [authOpen, setAuthOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchCategory, setSearchCategory] = useState<string | undefined>();
+  const [searchKey, setSearchKey] = useState(0);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [ordersOpen, setOrdersOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const handleCategoryClick = (category: string) => {
     setSearchCategory(category);
+    setSearchKey((k) => k + 1);
     setSearchOpen(true);
   };
 
