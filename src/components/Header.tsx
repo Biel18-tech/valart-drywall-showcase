@@ -34,7 +34,7 @@ const Header = ({ onSearchOpen, onCategoryClick }: HeaderProps) => {
     <header className="bg-surface-elevated shadow-md sticky top-0 z-40">
       <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-3">
         <a href="/" className="shrink-0">
-          <img src={logoValart} alt="ValArt - Construção a Seco" className="h-14 md:h-16 w-auto" />
+          <img src={logoValart} alt="ValArt - Construção a Seco" className="h-auto w-[120px] md:w-[150px]" />
         </a>
 
         <div className="hidden md:flex flex-1 max-w-xl mx-4">
