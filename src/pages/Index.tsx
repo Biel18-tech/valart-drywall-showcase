@@ -13,21 +13,35 @@ import AuthModal from "@/components/AuthModal";
 import SearchModal from "@/components/SearchModal";
 import CheckoutModal from "@/components/CheckoutModal";
 import OrdersModal from "@/components/OrdersModal";
+import ProductDetailModal from "@/components/ProductDetailModal";
+import type { Product } from "@/data/products";
 
 const Index = () => {
   const [authOpen, setAuthOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchCategory, setSearchCategory] = useState<string | undefined>();
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [ordersOpen, setOrdersOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const handleCategoryClick = (category: string) => {
+    setSearchCategory(category);
+    setSearchOpen(true);
+  };
+
+  const handleSearchOpen = () => {
+    setSearchCategory(undefined);
+    setSearchOpen(true);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
       <TopBar onLoginClick={() => setAuthOpen(true)} onOrdersClick={() => setOrdersOpen(true)} />
-      <Header onSearchOpen={() => setSearchOpen(true)} />
+      <Header onSearchOpen={handleSearchOpen} />
       <main className="flex-1">
         <HeroBanner />
-        <CategoryGrid />
-        <BestSellers />
+        <CategoryGrid onCategoryClick={handleCategoryClick} />
+        <BestSellers onProductClick={setSelectedProduct} />
         <BrandPartners />
         <OrcamentoSection />
         <BlogSection />
@@ -35,9 +49,10 @@ const Index = () => {
       <Footer />
       <CartDrawer onCheckout={() => setCheckoutOpen(true)} />
       <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} initialCategory={searchCategory} onProductClick={setSelectedProduct} />
       <CheckoutModal isOpen={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
       <OrdersModal isOpen={ordersOpen} onClose={() => setOrdersOpen(false)} />
+      {selectedProduct && <ProductDetailModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
     </div>
   );
 };
