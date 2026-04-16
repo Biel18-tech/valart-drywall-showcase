@@ -17,7 +17,7 @@ const navItems = [
   { label: "CONTATO", hasMega: false, href: "#contato" },
 ];
 
-const Header = ({ onSearchOpen }: HeaderProps) => {
+const Header = ({ onSearchOpen, onCategoryClick }: HeaderProps) => {
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const totalItems = useCart((s) => s.totalItems());
@@ -34,7 +34,7 @@ const Header = ({ onSearchOpen }: HeaderProps) => {
     <header className="bg-surface-elevated shadow-md sticky top-0 z-40">
       <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-3">
         <a href="/" className="shrink-0">
-          <img src={logoValart} alt="VAL ART - Construção a Seco" className="h-12 md:h-14 w-auto" />
+          <img src={logoValart} alt="ValArt - Construção a Seco" className="h-14 md:h-16 w-auto" />
         </a>
 
         <div className="hidden md:flex flex-1 max-w-xl mx-4">
@@ -78,7 +78,7 @@ const Header = ({ onSearchOpen }: HeaderProps) => {
                 {item.hasMega && megaOpen && (
                   <div className="absolute left-0 top-full bg-surface-elevated shadow-xl rounded-b-lg border border-border min-w-[260px] z-50">
                     {item.megaItems!.map((sub) => (
-                      <button key={sub} onClick={() => { setMegaOpen(false); scrollTo("#categorias"); }}
+                      <button key={sub} onClick={() => { setMegaOpen(false); onCategoryClick?.(sub); }}
                         className="block w-full text-left px-5 py-3 text-sm font-body text-foreground hover:bg-secondary hover:text-red-brand transition-colors">
                         {sub}
                       </button>
