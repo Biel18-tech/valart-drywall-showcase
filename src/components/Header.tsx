@@ -6,6 +6,7 @@ import logoValart from "@/assets/logo-valart.png";
 
 interface HeaderProps {
   onSearchOpen: () => void;
+  onCategoryClick?: (category: string) => void;
 }
 
 const navItems = [

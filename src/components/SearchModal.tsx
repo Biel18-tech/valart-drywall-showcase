@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, X, ShoppingCart, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/stores/useCart";
@@ -14,10 +14,18 @@ interface SearchModalProps {
 
 const SearchModal = ({ isOpen, onClose, initialCategory, onProductClick }: SearchModalProps) => {
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState(initialCategory || "Todos");
+  const [category, setCategory] = useState("Todos");
   const addItem = useCart((s) => s.addItem);
 
   const allCategories = ["Todos", ...categories];
+
+  useEffect(() => {
+    if (isOpen && initialCategory) {
+      setCategory(initialCategory);
+    } else if (isOpen && !initialCategory) {
+      setCategory("Todos");
+    }
+  }, [isOpen, initialCategory]);
 
   const filtered = allProducts.filter((p) => {
     const matchesQuery = !query || p.name.toLowerCase().includes(query.toLowerCase()) || p.brand.toLowerCase().includes(query.toLowerCase());

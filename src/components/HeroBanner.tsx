@@ -26,7 +26,7 @@ const HeroBanner = () => {
             className="max-w-2xl"
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black leading-tight mb-4">
-              <span className="text-red-brand">VAL ART</span>
+              <span className="text-red-brand">ValArt</span>
               <br />
               <span className="text-primary-foreground">Sua Obra a Seco Completa</span>
             </h1>
