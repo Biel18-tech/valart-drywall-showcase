@@ -51,7 +51,7 @@ const Index = () => {
       <Footer />
       <CartDrawer onCheckout={() => setCheckoutOpen(true)} />
       <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} initialCategory={searchCategory} onProductClick={setSelectedProduct} />
+      <SearchModal key={searchKey} isOpen={searchOpen} onClose={() => setSearchOpen(false)} initialCategory={searchCategory} onProductClick={setSelectedProduct} />
       <CheckoutModal isOpen={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
       <OrdersModal isOpen={ordersOpen} onClose={() => setOrdersOpen(false)} />
       {selectedProduct && <ProductDetailModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
