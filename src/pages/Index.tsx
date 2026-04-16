@@ -20,12 +20,14 @@ const Index = () => {
   const [authOpen, setAuthOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchCategory, setSearchCategory] = useState<string | undefined>();
+  const [searchKey, setSearchKey] = useState(0);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [ordersOpen, setOrdersOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const handleCategoryClick = (category: string) => {
     setSearchCategory(category);
+    setSearchKey((k) => k + 1);
     setSearchOpen(true);
   };
 
@@ -49,7 +51,7 @@ const Index = () => {
       <Footer />
       <CartDrawer onCheckout={() => setCheckoutOpen(true)} />
       <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} initialCategory={searchCategory} onProductClick={setSelectedProduct} />
+      <SearchModal key={searchKey} isOpen={searchOpen} onClose={() => setSearchOpen(false)} initialCategory={searchCategory} onProductClick={setSelectedProduct} />
       <CheckoutModal isOpen={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
       <OrdersModal isOpen={ordersOpen} onClose={() => setOrdersOpen(false)} />
       {selectedProduct && <ProductDetailModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}

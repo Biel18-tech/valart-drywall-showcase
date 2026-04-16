@@ -41,10 +41,6 @@ const SearchModal = ({ isOpen, onClose, initialCategory, onProductClick }: Searc
     });
   };
 
-  // Update category when initialCategory changes
-  if (initialCategory && initialCategory !== category && isOpen) {
-    setCategory(initialCategory);
-  }
 
   return (
     <AnimatePresence>
